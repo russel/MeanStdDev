@@ -10,7 +10,7 @@ import static java.lang.Math.sqrt;
 public class ParallelStreams {
   public static List<Number> meanStdDev(final Iterable<Number> iterable) {
     final List<Number> data = new ArrayList<Number>();
-    for (final Number n : iterable) { data.add(n); }
+    for (final Number n: iterable) { data.add(n); }
     return meanStdDev(data);
   }
   public static List<Number> meanStdDev(final Collection<Number> data) {
@@ -22,7 +22,7 @@ public class ParallelStreams {
     }
     final double xb = data.parallelStream().mapToDouble(x -> x.doubleValue()).sum() / n;
     final double sumSq = data.parallelStream().mapToDouble(x -> {
-      final Double y = x.doubleValue();
+      final double y = x.doubleValue();
       return y * y;
     }).sum();
     return Arrays.asList(xb, sqrt(sumSq - n * xb * xb) / (n - 1), n - 1);

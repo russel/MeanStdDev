@@ -9,8 +9,9 @@ import static java.lang.Math.sqrt;
 
 public class SequentialStreams {
   public static List<Number> meanStdDev(final Iterable<Number> iterable) {
+    // TODO There must be a better way of pulling on the iterable to create the list.
     final List<Number> data = new ArrayList<Number>();
-    for (final Number n : iterable) { data.add(n); }
+    for (final Number n: iterable) { data.add(n); }
     return meanStdDev(data);
   }
   public static List<Number> meanStdDev(final Collection<Number> data) {
@@ -21,9 +22,9 @@ public class SequentialStreams {
     }
     final double xb = data.stream().mapToDouble(x -> x.doubleValue()).sum() / n;
     final double sumSq = data.stream().mapToDouble(x -> {
-      final Double y = x.doubleValue();
+      final double y = x.doubleValue();
       return y * y;
     }).sum();
-    Arrays.asList(xb, sqrt(sumSq - n * xb * xb) / (n - 1), n - 1);
+    return Arrays.asList(xb, sqrt(sumSq - n * xb * xb) / (n - 1), n - 1);
   }
 }

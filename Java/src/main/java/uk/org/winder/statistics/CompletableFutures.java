@@ -10,17 +10,17 @@ public class CompletableFutures {
   public static List<Number> meanStdDev(final Iterable<Number> data) {
     final CompletableFuture<Integer> count = CompletableFuture.supplyAsync(() -> {
       int total = 0;
-      for (final Number item : data) { ++total; }
+      for (final Number item: data) { ++total; }
       return total;
     });
     final CompletableFuture<Double> sum = CompletableFuture.supplyAsync(() -> {
       double total = 0.0;
-      for (final Number item : data) { total += item.doubleValue(); }
+      for (final Number item: data) { total += item.doubleValue(); }
       return total;
     });
     final java.util.concurrent.CompletableFuture<Double> sumsq = java.util.concurrent.CompletableFuture.supplyAsync(() -> {
       double total = 0.0;
-      for (final Number item : data) {
+      for (final Number item: data) {
         final Double x = item.doubleValue();
         total += x * x;
       }

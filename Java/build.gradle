@@ -5,11 +5,12 @@ apply plugin: 'idea'
 
 repositories {
   mavenLocal()
+  jcenter()
   mavenCentral()
 }
 
 dependencies {
-  compile 'org.codehaus.groovy:groovy-all:2.3.2'
+  compile 'org.codehaus.groovy:groovy-all:2.3.7'
   compile 'org.codehaus.gpars:gpars:1.2.1'
   testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
 }
@@ -19,23 +20,23 @@ sourceCompatibility = 8
 defaultTasks 'classes'
 
 task wrapper (type:Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '2.1'
 }
 
 idea {
-    module {
-        excludeDirs += file('gradle/') // Gradle directory including the wrapper subdirectory.
-        excludeDirs += file('out') // IDEA compilation directory.
-        excludeDirs += file('build') // Gradle compilation directory.
+  project {
+    jdkName = '1.8'
+    languageLevel = '1.8'  // Gradle refuses to accept '8.0' here.
+    ipr {
+      withXml{provider ->
+        def node = provider.asNode()
+        node.component.find{it.'@name' == 'VcsDirectoryMappings'}.mapping[0].'@vcs' = 'Git'
+      }
     }
-    project {
-        jdkName '1.8'
-        languageLevel '1.8'  // Gradle refuses to accept '8.0' here.
-        ipr {
-            withXml { provider ->
-                def node = provider.asNode()
-                node.component.find{it.'@name' == 'VcsDirectoryMappings'}.mapping[0].'@vcs' = 'Git'
-            }
-        }
-    }
+  }
+  module {
+    excludeDirs += file('gradle/') // Gradle directory including the wrapper subdirectory.
+    excludeDirs += file('out') // IDEA compilation directory.
+    excludeDirs += file('build') // Gradle compilation directory.
+  }
 }
