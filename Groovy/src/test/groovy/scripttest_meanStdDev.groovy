@@ -11,11 +11,11 @@ class scripttest_meanStdDev extends Specification {
 
   static final scriptPaths = [
       'meanStdDev_sequential',
-      //'meanStdDev_parallel', //TODO:
+      'meanStdDev_parallel',
       'meanStdDev_promises',
       'meanStdDev_taskPromises',
       'meanStdDev_dataflowVariables',
-      'meanStdDev_dataflowOperators'
+      'meanStdDev_dataflowOperators',
       ].collect{"${scriptsPath}/${it}.groovy"}
 
   static final sqrtHalf = 0.7071067811865476

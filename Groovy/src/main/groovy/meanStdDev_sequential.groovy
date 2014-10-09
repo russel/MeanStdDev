@@ -16,7 +16,7 @@ import static Math.sqrt
 @CompileStatic
 static List<Number> meanStdDev(final Iterable<Number> data) {
   final List<Number> r = (List<Number>)data.inject([0.0d, 0.0d, 0i]){
-    List<Number> t, Number i -> double x = i as double ; [t[0] + x, t[1] + x * x, t[2] + 1]
+    List<Number> t, Number i -> double x = i as double; [t[0] + x, t[1] + x * x, t[2] + 1]
   }
   assert r.size() == 3
   final int n = r[2].intValue()
@@ -30,14 +30,14 @@ static List<Number> meanStdDev(final Iterable<Number> data) {
 
 def file = System.in
 switch (args.size()) {
-  case 0:
-    break
-  case 1:
-    file = new File(args[0])
-    break
-  default:
-    println 'Zero or one arguments only.'
-    return
+ case 0:
+  break
+ case 1:
+  file = new File(args[0])
+  break
+ default:
+  println 'Zero or one arguments only.'
+  return
 }
 def (xb, sd, df) = meanStdDev(file.text.split().collect{Double.parseDouble(it)})
 println "Mean = ${xb}, std.dev = ${sd}, df = ${df}"
