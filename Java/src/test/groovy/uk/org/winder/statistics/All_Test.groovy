@@ -10,7 +10,7 @@ class All_Test extends Specification {
   static final functions = [
       SequentialStreams.&meanStdDev,
       ParallelStreams.&meanStdDev,
-      CompletableFutures.&meanStdDev
+      CompletableFutures.&meanStdDev,
   ]
 
   @Unroll
