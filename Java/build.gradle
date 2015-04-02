@@ -1,18 +1,20 @@
-apply plugin: 'java'
+// Have to use groovy plugin here using Eclipse even though only need Java for shell and IDEA usage.
+
+//apply plugin: 'java'
+apply plugin: 'groovy'
 
 apply plugin: 'eclipse'
-apply plugin: 'idea'
 
 repositories {
-  mavenLocal()
+  // mavenLocal() Do not use this at first.
   jcenter()
   mavenCentral()
 }
 
 dependencies {
-  compile 'org.codehaus.groovy:groovy-all:2.3.7'
+  compile 'org.codehaus.groovy:groovy-all:2.4.3'
   compile 'org.codehaus.gpars:gpars:1.2.1'
-  testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+  testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
 }
 
 sourceCompatibility = 8
@@ -20,8 +22,14 @@ sourceCompatibility = 8
 defaultTasks 'classes'
 
 task wrapper (type:Wrapper) {
-    gradleVersion = '2.1'
+    gradleVersion = '2.3'
 }
+
+
+// IntelliJ IDEA Gradle plugin imports Gradle projects directly so there is no need for the Gradle IDEA
+// plugin, but here is its declaration anyway.
+
+apply plugin: 'idea'
 
 idea {
   project {
