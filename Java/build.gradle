@@ -12,8 +12,8 @@ repositories {
 }
 
 dependencies {
-  compile 'org.codehaus.groovy:groovy-all:2.4.3'
-  compile 'org.codehaus.gpars:gpars:1.2.1'
+  compile 'org.codehaus.groovy:groovy-all:2.4.+'
+  compile 'org.codehaus.gpars:gpars:1.+'
   testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
 }
 
@@ -22,7 +22,7 @@ sourceCompatibility = 8
 defaultTasks 'classes'
 
 task wrapper (type:Wrapper) {
-    gradleVersion = '2.3'
+    gradleVersion = '2.10'
 }
 
 
