@@ -1,4 +1,4 @@
-#! /usr/bin/env groovy
+#!/usr/bin/env groovy
 
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -15,36 +15,36 @@ import meanStdDev_dataflowOperators
 class unittest_meanStdDev extends Specification {
 
   final static functions = [
-      meanStdDev_sequential.&meanStdDev,
-      //meanStdDev_parallel.&meanStdDev, // TODO: Fails due to incorrect missing method.
-      meanStdDev_promises.&meanStdDev,
-      meanStdDev_taskPromises.&meanStdDev,
-      meanStdDev_dataflowVariables.&meanStdDev,
-      meanStdDev_dataflowOperators.&meanStdDev,
+      [meanStdDev_sequential.&meanStdDev, 'meanStdDev_sequential'],
+      //[meanStdDev_parallel.&meanStdDev, 'meanStdDev_parallel'], // TODO: Fails due to incorrect missing method.
+      [meanStdDev_promises.&meanStdDev, 'meanStdDev_promises'],
+      [meanStdDev_taskPromises.&meanStdDev, 'meanStdDev_taskPromises'],
+      [meanStdDev_dataflowVariables.&meanStdDev, 'meanStdDev_dataflowVariables'],
+      [meanStdDev_dataflowOperators.&meanStdDev, 'meanStdDev_dataflowOperators'],
   ]
 
   @Unroll
-  def 'mean and std dev not defined for string argument'() {
+  def 'mean and std dev not defined for string argument, #s'() {
     when:
     f.call('123456')
     then:
     thrown MissingMethodException
     where:
-    f << functions
+    [f, s] << functions
   }
 
   @Unroll
-  def 'mean and std dev not defined for map argument'() {
+  def 'mean and std dev not defined for map argument, #s'() {
     when:
      f.call([a: 1, b: 2])
     then:
      thrown MissingMethodException
     where:
-     f << functions
+     [f, s] << functions
   }
 
   @Unroll
-  def 'mean and std dev not defined on sequence of non-numeric values'() {
+  def 'mean and std dev not defined on sequence of non-numeric values, #s'() {
     when:
      f.call(['12345', []])
     then:
@@ -53,31 +53,31 @@ class unittest_meanStdDev extends Specification {
          (t instanceof IllegalArgumentException) ||
          (t instanceof org.codehaus.groovy.runtime.typehandling.GroovyCastException)
     where:
-     f << functions
+     [f, s] << functions
   }
 
   @Unroll
-  def 'mean and std dev of no data is not defined'() {
+  def 'mean and std dev of no data is not defined, #s'() {
     expect:
      f.call([]) ==  [Double.NaN, Double.NaN, -1]
     where:
-     f << functions
+     [f, s] << functions
   }
 
   @Unroll
-  def 'std dev of single integer item is not defined'() {
+  def 'std dev of single integer item is not defined, #s'() {
     expect:
      f.call([1]) == [1.0, Double.NaN, 0] // Risk here due to int/double equality test.
     where:
-    f << functions
+    [f, s] << functions
   }
 
   @Unroll
-  def 'std dev of single real item is not defined'() {
+  def 'std dev of single real item is not defined, #s'() {
     expect:
      f.call([1.0]) == [1.0, Double.NaN, 0] // Risk here due to double/double equality test.
     where:
-     f << functions
+     [f, s] << functions
   }
 
   static final sqrtHalf = 0.7071067811865476
@@ -96,11 +96,11 @@ class unittest_meanStdDev extends Specification {
     ]
 
   @Unroll
-  def 'mean and std dev of some items via some algorithm'() {
+  def 'mean and std dev of some items via #s'() {
     expect:
      areTriplesEqual(f.call(item), [xb, sd, df])
     where:
-     [f, item, xb, sd, df] << functions.collectMany {a -> testData.collect{d -> [a, d[0], d[1], d[2], d[3]]}}
+     [f, s, item, xb, sd, df] << functions.collectMany {a -> testData.collect{d -> [*a, *d]}}
   }
 
 }

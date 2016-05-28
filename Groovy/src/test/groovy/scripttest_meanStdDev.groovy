@@ -1,11 +1,11 @@
-#! /usr/bin/env groovy
+#!/usr/bin/env groovy
 
 import spock.lang.Specification
 import spock.lang.Unroll
 
 class scripttest_meanStdDev extends Specification {
 
-  static final projectPath = '/home/users/russel/Progs/Applications/MeanStdDev/Groovy'
+  static final projectPath = new File(".").getCanonicalPath()
   static final scriptsPath = "${projectPath}/src/main/groovy"
   static final testScriptDirectory = "${projectPath}/testScripts"
 
@@ -16,23 +16,23 @@ class scripttest_meanStdDev extends Specification {
       'meanStdDev_taskPromises',
       'meanStdDev_dataflowVariables',
       'meanStdDev_dataflowOperators',
-      ].collect{"${scriptsPath}/${it}.groovy"}
+      ].collect{[it, "${scriptsPath}/${it}.groovy"]}
 
   static final sqrtHalf = 0.7071067811865476
 
   @Unroll
-  def 'script exists and is executable'() {
+  def '#scriptName exists and is executable'() {
     given:
       def file = new File(scriptPath)
     expect:
       file.exists()
       file.canExecute()
     where:
-      scriptPath << scriptPaths
+      [scriptName, scriptPath] << scriptPaths
   }
 
   @Unroll
-  def 'script on no data on standard input'() {
+  def '#scriptName has no data on standard input'() {
     given:
      def process = ['sh', '-c', "${scriptPath} < ${testScriptDirectory}/emptyFile.txt"].execute()
     expect:
@@ -40,11 +40,11 @@ class scripttest_meanStdDev extends Specification {
      process.err.text == ''
      process.text == 'Mean = NaN, std.dev = NaN, df = -1\n'
     where:
-     scriptPath << scriptPaths
+     [scriptName, scriptPath] << scriptPaths
   }
 
   @Unroll
-  def 'script on non-existant file'() {
+  def '#scriptName fails with non-existant file'() {
     given:
      def process = "${scriptPath} flobadob".execute()
     expect:
@@ -52,11 +52,11 @@ class scripttest_meanStdDev extends Specification {
      process.err.text.startsWith 'Caught: java.io.FileNotFoundException: flobadob (No such file or directory)'
      process.text == ''
     where:
-     scriptPath << scriptPaths
+     [scriptName, scriptPath] << scriptPaths
   }
 
   @Unroll
-  def 'script on empty file'() {
+  def '#scriptName on empty file'() {
     given:
      def process = "${scriptPath} ${testScriptDirectory}/emptyFile.txt".execute()
     expect:
@@ -64,11 +64,11 @@ class scripttest_meanStdDev extends Specification {
      process.err.text == ''
      process.text == 'Mean = NaN, std.dev = NaN, df = -1\n'
     where:
-     scriptPath << scriptPaths
+     [scriptName, scriptPath] << scriptPaths
   }
 
   @Unroll
-  def 'script on file with one item'() {
+  def '#scriptName on file with one item'() {
     given:
      def process = "${scriptPath} ${testScriptDirectory}/singleItem.txt".execute()
     expect:
@@ -76,11 +76,11 @@ class scripttest_meanStdDev extends Specification {
      process.err.text == ''
      process.text == 'Mean = 1.0, std.dev = NaN, df = 0\n'
     where:
-     scriptPath << scriptPaths
+     [scriptName, scriptPath] << scriptPaths
   }
 
   @Unroll
-  def 'script on file with two item'() {
+  def '#scriptName on file with two items'() {
     given:
      def process = "${scriptPath} ${testScriptDirectory}/twoItems.txt".execute()
     expect:
@@ -88,7 +88,7 @@ class scripttest_meanStdDev extends Specification {
      process.err.text == ''
      process.text == "Mean = 1.5, std.dev = ${sqrtHalf}, df = 1\n"
     where:
-     scriptPath << scriptPaths
+     [scriptName, scriptPath] << scriptPaths
   }
 
 }

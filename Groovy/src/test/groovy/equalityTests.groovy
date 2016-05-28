@@ -10,7 +10,7 @@ class equalityTests extends Specification {
     }
 
     @Unroll
-    def 'realEqual does what it needs to'() {
+    def 'realEqual (#a, #b) == #result'() {
       expect:
       realEqual(a, b) == result
       where:
@@ -38,7 +38,7 @@ class equalityTests extends Specification {
       abs(x[0] - y[0]) < e && abs(x[1] - y[1]) < e && x[2] == y[2]
     }
 
-    def 'the third entry in the list must be an integer'() {
+    def 'the third entry in the list is an integer'() {
       when:
        areTriplesEqual([1, 1, 1], [1, 1, 1.0])
       then:
@@ -50,7 +50,7 @@ class equalityTests extends Specification {
     }
 
     @Unroll
-    def 'realEqualTriple does what it needs to'() {
+    def 'realEqualTriple (#a, #b, #c) == (#x, #y, #z)'() {
       expect:
       areTriplesEqual([a, b, c], [x, y, z]) == result
       where:

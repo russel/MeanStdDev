@@ -1,4 +1,4 @@
-#! /usr/bin/env groovy
+#!/usr/bin/env groovy
 
 import groovyx.gpars.dataflow.DataflowBroadcast
 import groovyx.gpars.dataflow.DataflowVariable
@@ -7,7 +7,7 @@ import static groovyx.gpars.dataflow.Dataflow.task
 
 import static Math.sqrt
 
-static List<Number> meanStdDev(final Iterable<Number> data) {
+static Tuple meanStdDev(final Iterable<Number> data) {
   final numberSource = new DataflowBroadcast()
   final countInputs = numberSource.createReadChannel()
   final sumInputs = numberSource.createReadChannel()
@@ -36,7 +36,7 @@ static List<Number> meanStdDev(final Iterable<Number> data) {
   task {
     final int n = count.val
     final double mean = sum.val / n
-    result << [mean, sqrt(sumsq.val - n * mean * mean) / (n - 1), n - 1]
+    result << new Tuple(mean, sqrt(sumsq.val - n * mean * mean) / (n - 1), n - 1)
   }
   for (final item in data) {
     if (!(item instanceof Number)) { throw new IllegalArgumentException() }
@@ -48,14 +48,9 @@ static List<Number> meanStdDev(final Iterable<Number> data) {
 
 def file = System.in
 switch (args.size()) {
- case 0:
-  break
- case 1:
-  file = new File(args[0])
-  break
- default:
-  println 'Zero or one arguments only.'
-  return
+ case 0: break
+ case 1: file = new File(args[0]); break
+ default: println 'Zero or one arguments only.'; System.exit(-1)
 }
 
 def (xb, sd, df) = meanStdDev(file.text.split().collect{Double.parseDouble(it)})
