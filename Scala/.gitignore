@@ -1,7 +1,8 @@
-.classpath
-.idea/
-.idea_modules/
-project/
-.project
-.settings/
-target/
+/.classpath
+/.idea/
+/project/
+/.project
+/.settings/
+/target/
+/build/
+/.gradle/

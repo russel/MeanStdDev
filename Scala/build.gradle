@@ -1,0 +1,17 @@
+apply plugin: 'scala'
+
+repositories {
+  jcenter()
+  mavenCentral()
+}
+
+dependencies {
+  compile 'org.scala-lang:scala-library:2.11.+'
+  testCompile 'org.scalatest:scalatest_2.11:2.+'
+}
+
+defaultTasks 'test'
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '2.13'
+}
