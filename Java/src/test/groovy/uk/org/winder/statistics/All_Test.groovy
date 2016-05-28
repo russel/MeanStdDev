@@ -3,6 +3,8 @@ package uk.org.winder.statistics
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import java.util.concurrent.CompletionException
+
 import static EqualityTests.areTriplesEqual
 
 class All_Test extends Specification {
@@ -39,7 +41,7 @@ class All_Test extends Specification {
      f.call(['12345', []])
     then:
      Throwable t = thrown()
-     (t instanceof ClassCastException) || ((t instanceof java.util.concurrent.CompletionException) && (t.cause instanceof ClassCastException))
+     (t instanceof ClassCastException) || ((t instanceof CompletionException) && (t.cause instanceof ClassCastException))
     where:
      f << functions
   }

@@ -19,12 +19,14 @@ public class SequentialStreams {
     switch (n) {
       case 0: return Arrays.asList(Double.NaN, Double.NaN, -1);
       case 1: return Arrays.asList(data.iterator().next(), Double.NaN, 0);
+      default: {
+        final double xb = data.stream().mapToDouble(Number::doubleValue).sum() / n;
+        final double sumSq = data.stream().mapToDouble(x -> {
+          final double y = x.doubleValue();
+          return y * y;
+        }).sum();
+        return Arrays.asList(xb, sqrt(sumSq - n * xb * xb) / (n - 1), n - 1);
+      }
     }
-    final double xb = data.stream().mapToDouble(x -> x.doubleValue()).sum() / n;
-    final double sumSq = data.stream().mapToDouble(x -> {
-      final double y = x.doubleValue();
-      return y * y;
-    }).sum();
-    return Arrays.asList(xb, sqrt(sumSq - n * xb * xb) / (n - 1), n - 1);
   }
 }

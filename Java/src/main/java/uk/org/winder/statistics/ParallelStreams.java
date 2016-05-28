@@ -13,18 +13,21 @@ public class ParallelStreams {
     for (final Number n: iterable) { data.add(n); }
     return meanStdDev(data);
   }
+
   public static List<Number> meanStdDev(final Collection<Number> data) {
     final int n = data.size();
     // Assume n is not negative.
     switch (n) {
       case 0: return Arrays.asList(Double.NaN, Double.NaN, -1);
       case 1: return Arrays.asList(data.iterator().next(), Double.NaN, 0);
+      default: {
+        final double xb = data.parallelStream().mapToDouble(Number::doubleValue).sum() / n;
+        final double sumSq = data.parallelStream().mapToDouble(x -> {
+          final double y = x.doubleValue();
+          return y * y;
+        }).sum();
+        return Arrays.asList(xb, sqrt(sumSq - n * xb * xb) / (n - 1), n - 1);
+      }
     }
-    final double xb = data.parallelStream().mapToDouble(x -> x.doubleValue()).sum() / n;
-    final double sumSq = data.parallelStream().mapToDouble(x -> {
-      final double y = x.doubleValue();
-      return y * y;
-    }).sum();
-    return Arrays.asList(xb, sqrt(sumSq - n * xb * xb) / (n - 1), n - 1);
   }
 }
