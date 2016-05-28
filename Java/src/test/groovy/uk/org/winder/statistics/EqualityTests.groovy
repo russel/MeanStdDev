@@ -12,7 +12,7 @@ class EqualityTests extends Specification {
     }
 
     @Unroll
-    def 'realEqual does what it needs to'() {
+    def 'realEqual (#a, #b) == #result'() {
       expect:
       realEqual(a, b) == result
       where:
@@ -54,7 +54,7 @@ class EqualityTests extends Specification {
     }
 
     @Unroll
-    def 'realEqualTriple does what it needs to'() {
+    def 'realEqualTriple (#a, #b, #c) == (#x, #y, #z)'() {
       expect:
       areTriplesEqual([a, b, c], [x, y, z]) == result
       where:

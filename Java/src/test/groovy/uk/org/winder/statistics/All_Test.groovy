@@ -10,64 +10,64 @@ import static EqualityTests.areTriplesEqual
 class All_Test extends Specification {
 
   static final functions = [
-      SequentialStreams.&meanStdDev,
-      ParallelStreams.&meanStdDev,
-      CompletableFutures.&meanStdDev,
+      [SequentialStreams.&meanStdDev, 'SequentialStreams'],
+      [ParallelStreams.&meanStdDev, 'ParallelStreams'],
+      [CompletableFutures.&meanStdDev, 'Co mpletableFutures'],
   ]
 
   @Unroll
-  def 'mean and std dev not defined for string argument'() {
+  def 'mean and std dev not defined for string argument, #s'() {
     when:
      f.call('123456')
     then:
      thrown MissingMethodException
     where:
-     f << functions
+     [f, s] << functions
   }
 
   @Unroll
-  def 'mean and std dev not defined for map argument'() {
+  def 'mean and std dev not defined for map argument, #s'() {
     when:
      f.call([a: 1, b: 2])
     then:
      thrown MissingMethodException
     where:
-     f << functions
+     [f, s] << functions
   }
 
   @Unroll
-  def 'mean and std dev not defined on sequence of non-numeric values'() {
+  def 'mean and std dev not defined on sequence of non-numeric values, #s'() {
     when:
      f.call(['12345', []])
     then:
      Throwable t = thrown()
      (t instanceof ClassCastException) || ((t instanceof CompletionException) && (t.cause instanceof ClassCastException))
     where:
-     f << functions
+     [f, s] << functions
   }
 
   @Unroll
-  def 'mean and std dev of no data is not defined'() {
+  def 'mean and std dev of no data is not defined, #s'() {
     expect:
      f.call([]) == [Double.NaN, Double.NaN, -1]
     where:
-     f << functions
+     [f, s] << functions
   }
 
   @Unroll
-  def 'std dev of single integer item is not defined'() {
+  def 'std dev of single integer item is not defined, #s'() {
     expect:
     f.call([1]) == [1.0, Double.NaN, 0] // Risk here due to int/double equality test.
     where:
-    f << functions
+    [f, s] << functions
   }
 
   @Unroll
-  def 'std dev of single double item is not defined'() {
+  def 'std dev of single double item is not defined, #s'() {
     expect:
      f.call([1.0]) == [1.0, Double.NaN, 0] // Risk here due to double/double equality test.
     where:
-     f << functions
+     [f, s] << functions
   }
 
   static final sqrtHalf = 0.7071067811865476
@@ -86,11 +86,11 @@ class All_Test extends Specification {
   ]
 
   @Unroll
-  def 'mean and std dev of some items via some algorithms'() {
+  def 'mean and std dev of some items via #s'() {
     expect:
      areTriplesEqual(f.call(item), [xb, sd, df])
     where:
-     [f, item,  xb,  sd,  df] << functions.collectMany{a -> testData.collect{d -> [a, d[0], d[1], d[2], d[3]]}}
+     [f, s, item,  xb,  sd,  df] << functions.collectMany{a -> testData.collect{d -> [*a, *d]}}
   }
 
 }
