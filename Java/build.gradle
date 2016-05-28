@@ -1,12 +1,9 @@
-// Have to use groovy plugin here using Eclipse even though only need Java for shell and IDEA usage.
-
-//apply plugin: 'java'
+apply plugin: 'java'
 apply plugin: 'groovy'
 
 apply plugin: 'eclipse'
 
 repositories {
-  // mavenLocal() Do not use this at first.
   jcenter()
   mavenCentral()
 }
@@ -14,12 +11,14 @@ repositories {
 dependencies {
   compile 'org.codehaus.groovy:groovy-all:2.4.+'
   compile 'org.codehaus.gpars:gpars:1.+'
-  testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+  testCompile('org.spockframework:spock-core:1.0-groovy-2.4'){
+    exclude module: 'groovy-all'
+  }
 }
 
 sourceCompatibility = 8
 
-defaultTasks 'classes'
+defaultTasks 'test'
 
 task wrapper (type:Wrapper) {
     gradleVersion = '2.13'
