@@ -10,8 +10,8 @@ object Sequential {
       Reducer(r.sum + x, r.sumSq + x * x, r.count + 1)
     })
     return when (sums.count) {
-      0 -> Result(Double.NaN, Double.NaN, 0)
-      1 -> Result(sums.sum, Double.NaN, 1)
+      0 -> Result(Double.NaN, Double.NaN, -1)
+      1 -> Result(sums.sum, Double.NaN, 0)
       else -> {
         val xb = sums.sum / sums.count
         val df = sums.count - 1

@@ -19,11 +19,31 @@ repositories {
 
 dependencies {
   compile 'org.jetbrains.kotlin:kotlin-stdlib:1.+'
+  compile 'co.paralleluniverse:quasar-core:0.+:jdk8'
+  compile 'co.paralleluniverse:quasar-kotlin:0.+'
   testCompile 'io.kotlintest:kotlintest:1.2.+'
 }
 
 sourceSets {
   main.java.srcDirs += 'src/main/kotlin'
+}
+
+compileKotlin {
+    doLast {
+        ant.taskdef(name:'instrumentation', classname:'co.paralleluniverse.fibers.instrument.InstrumentationTask', classpath: configurations.compile.asPath)
+        ant.instrumentation(verbose:'true', check:'true', debug:'true') {
+            fileset(dir: sourceSets.main.output.classesDir)
+        }
+    }
+}
+
+compileTestKotlin {
+    doLast {
+        ant.taskdef(name:'instrumentation', classname:'co.paralleluniverse.fibers.instrument.InstrumentationTask', classpath: configurations.testCompile.asPath)
+        ant.instrumentation(verbose:'true', check:'true', debug:'true') {
+            fileset(dir: sourceSets.test.output.classesDir)
+        }
+    }
 }
 
 task wrapper(type:Wrapper) {
