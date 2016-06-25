@@ -2,7 +2,7 @@ import ceylon.test{test, testExecutor, assertEquals}
 
 import com.athaydes.specks{feature, Specification, SpecksTestExecutor}
 import com.athaydes.specks.assertion{expect}
-import com.athaydes.specks.matcher{equalTo}
+import com.athaydes.specks.matcher{sameAs}
 
 import uk.org.winder.statistics{meanStdDev, Result}
 
@@ -43,6 +43,6 @@ shared Specification meanStdDev_test() => Specification{
 		feature{
 			when([Float|Integer*] item, Result result) => [meanStdDev(item), result];
 			examples = testTable;
-			(Result actual, Result expected) => expect(actual, equalTo(expected))
+			(Result actual, Result expected) => expect(actual, sameAs(expected))
 		}
 	};
