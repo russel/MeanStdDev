@@ -11,8 +11,9 @@ object Parallel {
       case 1 => (data.head, Double.NaN, 0)
       case _ => {
         val xb = data.par.sum / n
+        val df = n - 1
         val sumsq = data.par.map(x => x * x).sum
-        (xb, sqrt(sumsq - n * xb * xb) / (n - 1), n - 1)
+        (xb, sqrt((sumsq - n * xb * xb) / df), df)
       }
     }
   }

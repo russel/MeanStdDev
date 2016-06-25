@@ -33,7 +33,7 @@ static Tuple meanStdDev(final Iterable<Number> data) {
   }
   final calculator = operator(inputs: [count, sum, sumSq], outputs: [results]) { int n, double s, double ss ->
     double xb = s / n
-    bindOutput 0, [xb, sqrt(ss - n * xb * xb) / (n -1), n - 1]
+    bindOutput 0, [xb, sqrt((ss - n * xb * xb) / (n -1)), n - 1]
   }
   for (final item in data) {
     if (item instanceof Number) { numberSource << item }

@@ -7,8 +7,7 @@ import static equalityTests.areTriplesEqual
 
 import meanStdDev_sequential
 //import meanStdDev_parallel
-import meanStdDev_promises
-import meanStdDev_taskPromises
+import meanStdDev_futures
 import meanStdDev_dataflowVariables
 import meanStdDev_dataflowOperators
 
@@ -17,8 +16,7 @@ class unittest_meanStdDev extends Specification {
   final static functions = [
       [meanStdDev_sequential.&meanStdDev, 'meanStdDev_sequential'],
       //[meanStdDev_parallel.&meanStdDev, 'meanStdDev_parallel'], // TODO: Fails due to incorrect missing method.
-      [meanStdDev_promises.&meanStdDev, 'meanStdDev_promises'],
-      [meanStdDev_taskPromises.&meanStdDev, 'meanStdDev_taskPromises'],
+      [meanStdDev_futures.&meanStdDev, 'meanStdDev_futures'],
       [meanStdDev_dataflowVariables.&meanStdDev, 'meanStdDev_dataflowVariables'],
       [meanStdDev_dataflowOperators.&meanStdDev, 'meanStdDev_dataflowOperators'],
   ]
@@ -92,11 +90,11 @@ class unittest_meanStdDev extends Specification {
        [[1, 1.0, 1], 1.0, 0.0, 2],
        [[1.0, 1, 1], 1.0, 0.0, 2],
        [[1.0, 1.0, 1.0], 1.0, 0.0, 2],
-       [[1.0, 2.0, 1.0, 2.0], 1.5, 0.333333333333333, 3],
+       [[1.0, 2.0, 1.0, 2.0], 1.5, 0.5773502691896257, 3],
     ]
 
   @Unroll
-  def 'mean and std dev of some items via #s'() {
+  def '#s(#item) == [#xb, #sd, #df]'() {
     expect:
      areTriplesEqual(f.call(item), [xb, sd, df])
     where:

@@ -16,7 +16,8 @@ object Futures {
       case 1 => (data.head, Double.NaN, 0)
       case _ => {
         val xb = Await.result(sumv, Duration.Inf) / n
-        (xb, sqrt(Await.result(sumsq, Duration.Inf) - n * xb * xb) / (n - 1), n - 1)
+        val df = n - 1
+        (xb, sqrt((Await.result(sumsq, Duration.Inf) - n * xb * xb) / df), df)
       }
     }
   }

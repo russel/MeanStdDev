@@ -16,7 +16,7 @@ class scripttest_runningMeanStdDev extends Specification {
   static final sqrtHalf = 0.7071067811865476
 
   @Unroll
-  def '#scriptName exists and is executable'() {
+  def 'script exists and is executable, #scriptName'() {
     given:
       def file = new File(scriptPath)
     expect:
@@ -27,7 +27,7 @@ class scripttest_runningMeanStdDev extends Specification {
   }
 
   @Unroll
-  def '#scriptName on no data'() {
+  def 'execute on no data, #scriptName'() {
     given:
      def process = "${scriptPath} ${testScriptDirectory}/emptyFile.txt".execute()
     expect:
@@ -39,7 +39,7 @@ class scripttest_runningMeanStdDev extends Specification {
   }
 
   @Unroll
-  def '#scriptName on one item'() {
+  def 'execute on one item, #scriptName'() {
     given:
      def process = "${scriptPath} ${testScriptDirectory}/singleItem.txt".execute()
     expect:
@@ -51,7 +51,7 @@ class scripttest_runningMeanStdDev extends Specification {
   }
 
   @Unroll
-  def '#scriptName on two item'() {
+  def 'execute on two items, #scriptName'() {
     given:
      def process = "${scriptPath} ${testScriptDirectory}/twoItems.txt".execute()
     expect:

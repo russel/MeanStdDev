@@ -32,7 +32,7 @@ operator(inputs: [sumSqInputs], outputs: [sumSq], stateObject: [total: 0.0d]) {D
 }
 operator(inputs: [count, sum, sumSq], outputs: [results]) {int n, double s, double ss ->
   double xb = s / n
-  bindOutput 0, [xb, sqrt(ss - n * xb * xb) / (n -1), n - 1]
+  bindOutput 0, [xb, sqrt((ss - n * xb * xb) / (n -1)), n - 1]
 }
 final printer = operator(inputs: [results], outputs: []) {item ->
   assert item.size() == 3
@@ -46,7 +46,7 @@ switch (args.size()) {
  default: println 'Zero or one arguments only.'; System.exit(-1)
 }
 
-file.eachLine { line ->
+file.eachLine{line ->
   line.split().collect{Double.parseDouble(it)}.each{numberSource << it}
 }
 

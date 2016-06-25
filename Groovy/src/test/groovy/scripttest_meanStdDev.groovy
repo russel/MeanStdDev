@@ -12,8 +12,7 @@ class scripttest_meanStdDev extends Specification {
   static final scriptPaths = [
       'meanStdDev_sequential',
       'meanStdDev_parallel',
-      'meanStdDev_promises',
-      'meanStdDev_taskPromises',
+      'meanStdDev_futures',
       'meanStdDev_dataflowVariables',
       'meanStdDev_dataflowOperators',
       ].collect{[it, "${scriptsPath}/${it}.groovy"]}
@@ -21,7 +20,7 @@ class scripttest_meanStdDev extends Specification {
   static final sqrtHalf = 0.7071067811865476
 
   @Unroll
-  def '#scriptName exists and is executable'() {
+  def 'script exists and is executable, #scriptName'() {
     given:
       def file = new File(scriptPath)
     expect:
@@ -32,7 +31,7 @@ class scripttest_meanStdDev extends Specification {
   }
 
   @Unroll
-  def '#scriptName has no data on standard input'() {
+  def 'execute with no data on standard input, #scriptName'() {
     given:
      def process = ['sh', '-c', "${scriptPath} < ${testScriptDirectory}/emptyFile.txt"].execute()
     expect:
@@ -44,7 +43,7 @@ class scripttest_meanStdDev extends Specification {
   }
 
   @Unroll
-  def '#scriptName fails with non-existant file'() {
+  def 'execution fails with non-existant file, #scriptName'() {
     given:
      def process = "${scriptPath} flobadob".execute()
     expect:
@@ -56,7 +55,7 @@ class scripttest_meanStdDev extends Specification {
   }
 
   @Unroll
-  def '#scriptName on empty file'() {
+  def 'execute on empty file, #scriptName'() {
     given:
      def process = "${scriptPath} ${testScriptDirectory}/emptyFile.txt".execute()
     expect:
@@ -68,7 +67,7 @@ class scripttest_meanStdDev extends Specification {
   }
 
   @Unroll
-  def '#scriptName on file with one item'() {
+  def 'execute on file with one item, #scriptName'() {
     given:
      def process = "${scriptPath} ${testScriptDirectory}/singleItem.txt".execute()
     expect:
@@ -80,7 +79,7 @@ class scripttest_meanStdDev extends Specification {
   }
 
   @Unroll
-  def '#scriptName on file with two items'() {
+  def 'execute on file with two items, #scriptName'() {
     given:
      def process = "${scriptPath} ${testScriptDirectory}/twoItems.txt".execute()
     expect:

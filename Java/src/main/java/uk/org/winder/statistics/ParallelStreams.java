@@ -26,7 +26,7 @@ public class ParallelStreams {
           final double y = x.doubleValue();
           return y * y;
         }).sum();
-        return Arrays.asList(xb, sqrt(sumSq - n * xb * xb) / (n - 1), n - 1);
+        return Arrays.asList(xb, sqrt((sumSq - n * xb * xb) / (n - 1)), n - 1);
       }
     }
   }

@@ -25,7 +25,7 @@ static Tuple meanStdDev(final Iterable<Number> data) {
     case 1: return new Tuple(r[0] / n, Double.NaN, 0)
     default:
       final double xb = r[0] / n
-      return new Tuple(xb, sqrt(r[1] - n * xb * xb) / ((double) (n - 1)), n - 1)
+      return new Tuple(xb, sqrt((r[1] - n * xb * xb) / (n - 1)), n - 1)
   }
 }
 

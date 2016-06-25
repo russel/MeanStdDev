@@ -31,7 +31,7 @@ static Tuple meanStdDev(final Iterable<Number> data) {
   final result = task {
     final int n = count.val
     final double mean = sum.val / n
-    new Tuple (mean, sqrt(sumSq.val - n * mean * mean) / (n - 1), n - 1)
+    new Tuple (mean, sqrt((sumSq.val - n * mean * mean) / (n - 1)), n - 1)
   }
   for (final item in data) {
     if (!(item instanceof Number)) { throw new IllegalArgumentException() }

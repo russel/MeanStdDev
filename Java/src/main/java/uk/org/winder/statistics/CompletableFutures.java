@@ -18,7 +18,7 @@ public class CompletableFutures {
       for (final Number item: data) { total += item.doubleValue(); }
       return total;
     });
-    final java.util.concurrent.CompletableFuture<Double> sumsq = java.util.concurrent.CompletableFuture.supplyAsync(() -> {
+    final CompletableFuture<Double> sumsq = java.util.concurrent.CompletableFuture.supplyAsync(() -> {
       double total = 0.0;
       for (final Number item: data) {
         final Double x = item.doubleValue();
@@ -29,10 +29,14 @@ public class CompletableFutures {
     final Integer n = count.join();
     // Assume n is not negative.
     switch (n) {
-      case 0: return Arrays.asList(Double.NaN, Double.NaN, -1);
-      case 1: return Arrays.asList(data.iterator().next(), Double.NaN, 0);
+      case 0:
+        return Arrays.asList(Double.NaN, Double.NaN, -1);
+      case 1:
+        return Arrays.asList(data.iterator().next(), Double.NaN, 0);
+      default: {
+        final Double xb = sum.join() / n;
+        return Arrays.asList(xb, sqrt((sumsq.join() - n * xb * xb) / (n - 1)), n - 1);
+      }
     }
-    final Double xb = sum.join() / n;
-    return Arrays.asList(xb, sqrt(sumsq.join() - n * xb * xb) / (n - 1), n - 1);
   }
 }
