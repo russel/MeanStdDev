@@ -21,7 +21,7 @@ sourceCompatibility = 8
 defaultTasks 'test'
 
 task wrapper (type:Wrapper) {
-    gradleVersion = '2.13'
+    gradleVersion = '3.2.1'
 }
 
 
