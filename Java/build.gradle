@@ -19,31 +19,3 @@ dependencies {
 sourceCompatibility = 8
 
 defaultTasks 'test'
-
-task wrapper (type:Wrapper) {
-    gradleVersion = '3.2.1'
-}
-
-
-// IntelliJ IDEA Gradle plugin imports Gradle projects directly so there is no need for the Gradle IDEA
-// plugin, but here is its declaration anyway.
-
-apply plugin: 'idea'
-
-idea {
-  project {
-    jdkName = '1.8'
-    languageLevel = '1.8'  // Gradle refuses to accept '8.0' here.
-    ipr {
-      withXml{provider ->
-        def node = provider.asNode()
-        node.component.find{it.'@name' == 'VcsDirectoryMappings'}.mapping[0].'@vcs' = 'Git'
-      }
-    }
-  }
-  module {
-    excludeDirs += file('gradle/') // Gradle directory including the wrapper subdirectory.
-    excludeDirs += file('out') // IDEA compilation directory.
-    excludeDirs += file('build') // Gradle compilation directory.
-  }
-}
