@@ -1,4 +1,6 @@
-apply plugin: 'scala'
+plugins {
+	id 'scala'
+}
 
 repositories {
   jcenter()
@@ -6,8 +8,14 @@ repositories {
 }
 
 dependencies {
-  compile 'org.scala-lang:scala-library:2.11.+'
-  testCompile 'org.scalatest:scalatest_2.11:2.+'
+  compile 'org.scala-lang:scala-library:2.12.+'
+  testCompile 'org.scalatest:scalatest_2.12:3.0.+'
 }
 
-defaultTasks 'test'
+task scalaTest(dependsOn: ['testClasses'], type: JavaExec) {
+	main = 'org.scalatest.tools.Runner'
+	args = ['-R', 'build/classes/scala/test', '-o']
+	classpath = sourceSets.test.runtimeClasspath
+}
+
+defaultTasks 'scalaTest'
